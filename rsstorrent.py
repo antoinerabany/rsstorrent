@@ -2,18 +2,47 @@
 # -*- coding: utf-8 -*-
 
 import feedparser
+import shelve
+from datetime import date
+import requests
+import os
 
-url = "https://kickass.so/usearch/rar%20x264%20HDTV%20720p%20vikings/?rss=1"
 
-feed = feedparser.parse(url)
+def main():
+  #On définit la position des fichiers
+  curdir = os.path.dirname(__file__)
+  downloadedlist = os.path.join(curdir, 'downloadedlist')
+  rsslist =os.path.join(curdir, 'rsslist.txt')
+  watchfolder="~/torrents/"
 
-#Pour chaque entrée du flux rss
-for entry in feed.entries:
-  for link in entry.links:
-    if link.type == "application/x-bittorrent":
-      #On récupère les info qui nous serons utiles.
-      url = link.href
-      title = entry.title
-      filename = entry.torrent_filename
-      torrent_hash = entry.torrent_infohash
+  #On regarde tout les flux qui sont dans la liste rrslist
+  with open(rsslist,'r') as f:
+    for line in f:
 
+      #On récupère le flux
+      feed = feedparser.parse(line)
+
+      #Pour chaque entrée du flux rss
+      for entry in feed.entries:
+        for link in entry.links:
+          if link.type == "application/x-bittorrent":
+            #On récupère les info qui nous serons utiles.
+            url = link.href
+            title = entry.title
+            filename = entry.torrent_filename
+            torrent_hash = entry.torrent_infohash
+
+            #On ouvre le shelve avec tout ce qu'on a deja telechargé
+            #le hash sert de clé
+            db = shelve.open(downloadedlist)
+            #si le hash n'est pas présent dans la base alors le torrent n'a pas
+            #été téléchargé
+            if not torrent_hash in db:
+              #On télécharge le torrent dans le dossier watchfolder
+              os.system("curl -s --compressed -o " +watchfolder + filename + " "
+                  + url)
+              db[torrent_hash]=[title,date.today()]
+            db.close()
+
+if __name__ == "__main__":
+  main()

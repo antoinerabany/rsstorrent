@@ -1,10 +1,25 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+#    rsstorrent
+#    Copyright (C) 2015 Antoine Rabany, Maxime Niankouri 
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#    You should have received a copy of the GNU General Public License along
+#    with this program; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
 #Script téléchargeant des torrents listés dans des flux rss du fichier
 #rsslist.txt. il stoke la liste des torrents téléchargés dans downlodedlist.db
 #Ce script est fortement inspiré d'un script de maxime niankouri ecrit en perl.
-#Copyright Antoine Rabany, Maxime Niankouri
 
 #imports
 import feedparser

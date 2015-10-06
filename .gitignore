@@ -1,2 +1,6 @@
 downloadedlist.db
 rsslist.txt
+parameters.json
+__init__.py
+/__pychache__/
+token.json
